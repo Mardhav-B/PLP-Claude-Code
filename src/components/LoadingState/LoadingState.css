@@ -1,0 +1,25 @@
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.skeleton-card__media {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-card__line {
+  height: 12px;
+  border-radius: 4px;
+}
+
+.shimmer {
+  background: linear-gradient(90deg, var(--color-border) 25%, #eef0f6 37%, var(--color-border) 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease infinite;
+}
