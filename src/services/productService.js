@@ -89,6 +89,10 @@ export async function getProducts({
   });
 }
 
+export async function getProductById(id) {
+  return delay(PRODUCTS.find((p) => p.id === id) ?? null);
+}
+
 export async function getFacets() {
   const categories = [...new Set(PRODUCTS.map((p) => p.category))];
   const brands = [...new Set(PRODUCTS.map((p) => p.brand))];

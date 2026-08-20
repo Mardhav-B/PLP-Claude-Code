@@ -1,0 +1,10 @@
+.recently-viewed {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.recently-viewed h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+}

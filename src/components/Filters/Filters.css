@@ -18,7 +18,14 @@
   font-weight: 700;
 }
 
-.filters__reset {
+.filters__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.filters__reset,
+.filters__save {
   background: none;
   border: none;
   color: var(--color-accent);

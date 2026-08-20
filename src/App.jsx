@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Header from './components/Header/Header';
 import Breadcrumb from './components/Breadcrumb/Breadcrumb';
 import CategoryHeader from './components/CategoryHeader/CategoryHeader';
@@ -6,8 +6,10 @@ import Filters from './components/Filters/Filters';
 import SortBar from './components/SortBar/SortBar';
 import ProductGrid from './components/ProductGrid/ProductGrid';
 import Pagination from './components/Pagination/Pagination';
+import RecentlyViewed from './components/RecentlyViewed/RecentlyViewed';
 import { useProducts } from './hooks/useProducts';
-import { CATEGORIES, BRANDS, PRICE_BOUNDS } from './data/products';
+import { useShop } from './context/ShopContext';
+import { CATEGORIES, BRANDS, PRICE_BOUNDS, PRODUCTS } from './data/products';
 import './App.css';
 
 export default function App() {
@@ -22,11 +24,18 @@ export default function App() {
     filters,
     updateFilters,
     resetFilters,
+    saveFilters,
     isLoading,
     isEmpty,
   } = useProducts({ pageSize: 12 });
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const { recentlyViewed } = useShop();
+  const recentlyViewedProducts = useMemo(
+    () => recentlyViewed.map((id) => PRODUCTS.find((p) => p.id === id)).filter(Boolean),
+    [recentlyViewed]
+  );
 
   return (
     <>
@@ -42,6 +51,8 @@ export default function App() {
           isLoading={isLoading}
         />
 
+        <RecentlyViewed products={recentlyViewedProducts} />
+
         <div className="page__layout">
           <Filters
             className="page__filters-desktop"
@@ -51,6 +62,7 @@ export default function App() {
             filters={filters}
             onChange={updateFilters}
             onReset={resetFilters}
+            onSave={saveFilters}
           />
 
           <div className="page__content">

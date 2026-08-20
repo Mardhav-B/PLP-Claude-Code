@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './Filters.css';
 
 const RATING_OPTIONS = [4, 3, 2, 1];
@@ -9,10 +10,19 @@ export default function Filters({
   filters,
   onChange,
   onReset,
+  onSave,
   className = '',
 }) {
   const { categories: activeCategories, brands: activeBrands, minPrice, maxPrice, minRating, inStockOnly } =
     filters;
+
+  const [justSaved, setJustSaved] = useState(false);
+
+  function handleSave() {
+    onSave();
+    setJustSaved(true);
+    setTimeout(() => setJustSaved(false), 2000);
+  }
 
   function toggleFromList(list, value) {
     return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
@@ -29,11 +39,16 @@ export default function Filters({
     <aside className={`filters ${className}`} aria-label="Product filters">
       <div className="filters__header">
         <h2>Filters</h2>
-        {activeCount > 0 && (
-          <button className="filters__reset" onClick={onReset}>
-            Clear all ({activeCount})
+        <div className="filters__header-actions">
+          <button className="filters__save" onClick={handleSave}>
+            {justSaved ? 'Saved!' : 'Save Filters'}
           </button>
-        )}
+          {activeCount > 0 && (
+            <button className="filters__reset" onClick={onReset}>
+              Clear all ({activeCount})
+            </button>
+          )}
+        </div>
       </div>
 
       <section className="filters__group">

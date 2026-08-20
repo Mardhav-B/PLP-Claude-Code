@@ -2,19 +2,34 @@ import { createContext, useContext, useMemo, useState, useCallback } from 'react
 
 const ShopContext = createContext(null);
 
+const RECENTLY_VIEWED_KEY = 'plp:recentlyViewed';
+const RECENTLY_VIEWED_LIMIT = 8;
+
+function readRecentlyViewed() {
+  try {
+    const raw = localStorage.getItem(RECENTLY_VIEWED_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export function ShopProvider({ children }) {
   const [cart, setCart] = useState([]); // [{ product, qty }]
   const [wishlist, setWishlist] = useState([]); // [productId]
+  const [recentlyViewed, setRecentlyViewed] = useState(readRecentlyViewed); // [productId], most recent first
 
-  const addToCart = useCallback((product) => {
+  const addToCart = useCallback((product, qty = 1) => {
     setCart((prev) => {
       const existing = prev.find((line) => line.product.id === product.id);
       if (existing) {
         return prev.map((line) =>
-          line.product.id === product.id ? { ...line, qty: line.qty + 1 } : line
+          line.product.id === product.id ? { ...line, qty: line.qty + qty } : line
         );
       }
-      return [...prev, { product, qty: 1 }];
+      return [...prev, { product, qty }];
     });
   }, []);
 
@@ -26,6 +41,14 @@ export function ShopProvider({ children }) {
     setWishlist((prev) =>
       prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
     );
+  }, []);
+
+  const recordView = useCallback((productId) => {
+    setRecentlyViewed((prev) => {
+      const next = [productId, ...prev.filter((id) => id !== productId)].slice(0, RECENTLY_VIEWED_LIMIT);
+      localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const cartCount = useMemo(() => cart.reduce((sum, line) => sum + line.qty, 0), [cart]);
@@ -43,8 +66,10 @@ export function ShopProvider({ children }) {
       removeFromCart,
       wishlist,
       toggleWishlist,
+      recentlyViewed,
+      recordView,
     }),
-    [cart, cartCount, cartTotal, addToCart, removeFromCart, wishlist, toggleWishlist]
+    [cart, cartCount, cartTotal, addToCart, removeFromCart, wishlist, toggleWishlist, recentlyViewed, recordView]
   );
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

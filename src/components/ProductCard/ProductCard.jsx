@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useShop } from "../../context/ShopContext";
 import { formatCurrency } from "../../utils/formatCurrency";
 import "./ProductCard.css";
@@ -11,7 +12,9 @@ export default function ProductCard({ product }) {
       className={`product-card ${!product.inStock ? "product-card--out" : ""}`}
     >
       <div className="product-card__media">
-        <img src={product.image} alt={product.name} loading="lazy" />
+        <Link to={`/product/${product.id}`}>
+          <img src={product.image} alt={product.name} loading="lazy" />
+        </Link>
 
         {product.discountPercent > 0 && (
           <span className="product-card__badge product-card__badge--sale">
@@ -53,7 +56,9 @@ export default function ProductCard({ product }) {
 
       <div className="product-card__body">
         <p className="product-card__brand">{product.brand}</p>
-        <h3 className="product-card__name">{product.name}</h3>
+        <h3 className="product-card__name">
+          <Link to={`/product/${product.id}`}>{product.name}</Link>
+        </h3>
 
         <div className="product-card__rating">
           <span className="product-card__stars" aria-hidden="true">

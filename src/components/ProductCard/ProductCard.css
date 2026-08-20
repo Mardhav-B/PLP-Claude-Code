@@ -20,6 +20,12 @@
   background: var(--color-bg);
 }
 
+.product-card__media a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .product-card__media img {
   width: 100%;
   height: 100%;
@@ -116,6 +122,10 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 2.6em;
+}
+
+.product-card__name a:hover {
+  text-decoration: underline;
 }
 
 .product-card__rating {
