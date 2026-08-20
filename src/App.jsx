@@ -37,6 +37,14 @@ export default function App() {
     [recentlyViewed]
   );
 
+  const hasActiveFilters =
+    filters.categories.length > 0 ||
+    filters.brands.length > 0 ||
+    Boolean(filters.minRating) ||
+    filters.inStockOnly ||
+    filters.minPrice !== undefined ||
+    filters.maxPrice !== undefined;
+
   return (
     <>
       <Header search={filters.search} onSearchChange={(search) => updateFilters({ search })} />
@@ -66,7 +74,13 @@ export default function App() {
           />
 
           <div className="page__content">
-            <SortBar sortBy={sortBy} onChange={changeSort} onOpenFilters={() => setMobileFiltersOpen(true)} />
+            <SortBar
+              sortBy={sortBy}
+              onChange={changeSort}
+              onOpenFilters={() => setMobileFiltersOpen(true)}
+              hasActiveFilters={hasActiveFilters}
+              onClearFilters={resetFilters}
+            />
 
             <ProductGrid
               products={items}

@@ -25,6 +25,21 @@
   height: 16px;
 }
 
+.sort-bar__clear-btn {
+  background: none;
+  border: none;
+  padding: var(--space-2) 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sort-bar__clear-btn:hover {
+  color: var(--color-text);
+}
+
 .sort-bar__sort {
   display: flex;
   align-items: center;

@@ -1,7 +1,7 @@
 import { SORT_OPTIONS } from '../../services/productService';
 import './SortBar.css';
 
-export default function SortBar({ sortBy, onChange, onOpenFilters }) {
+export default function SortBar({ sortBy, onChange, onOpenFilters, hasActiveFilters, onClearFilters }) {
   return (
     <div className="sort-bar">
       <button className="sort-bar__filter-btn" onClick={onOpenFilters}>
@@ -10,6 +10,12 @@ export default function SortBar({ sortBy, onChange, onOpenFilters }) {
         </svg>
         Filters
       </button>
+
+      {hasActiveFilters && (
+        <button className="sort-bar__clear-btn" onClick={onClearFilters}>
+          Clear filters
+        </button>
+      )}
 
       <label className="sort-bar__sort">
         <span>Sort by</span>
