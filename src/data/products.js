@@ -29,14 +29,24 @@ const RAW_PRODUCTS = [
   { id: 'p24', name: 'Trail Running Backpack 20L', brand: 'TrailGear', category: 'Sports', price: 54.0, originalPrice: 72.0, rating: 4.2, reviews: 133, inStock: false, isNew: false },
 ];
 
-export const PRODUCTS = RAW_PRODUCTS.map((p) => ({
-  ...p,
-  image: placeholderImage(p.id, p.name),
-  discountPercent:
-    p.originalPrice > p.price
-      ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
-      : 0,
-}));
+export const PRODUCTS = RAW_PRODUCTS.map((p) => {
+  const images = [
+    placeholderImage(p.id, p.name),
+    placeholderImage(`${p.id}-2`, p.name),
+    placeholderImage(`${p.id}-3`, p.name),
+    placeholderImage(`${p.id}-4`, p.name),
+  ];
+
+  return {
+    ...p,
+    image: images[0],
+    images,
+    discountPercent:
+      p.originalPrice > p.price
+        ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)
+        : 0,
+  };
+});
 
 export const CATEGORIES = [...new Set(PRODUCTS.map((p) => p.category))];
 export const BRANDS = [...new Set(PRODUCTS.map((p) => p.brand))];

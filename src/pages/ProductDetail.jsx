@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
 import ProductGrid from '../components/ProductGrid/ProductGrid';
+import ProductGallery from '../components/ProductGallery/ProductGallery';
 import { getProductById } from '../services/productService';
 import { PRODUCTS } from '../data/products';
 import { useShop } from '../context/ShopContext';
@@ -63,13 +64,16 @@ export default function ProductDetail() {
         />
 
         <div className="pdp">
-          <div className="pdp__media">
-            <img src={product.image} alt={product.name} />
+          <ProductGallery
+            key={product.id}
+            images={product.images ?? [product.image]}
+            name={product.name}
+          >
             {product.discountPercent > 0 && (
               <span className="pdp__badge pdp__badge--sale">-{product.discountPercent}%</span>
             )}
             {product.isNew && <span className="pdp__badge pdp__badge--new">New</span>}
-          </div>
+          </ProductGallery>
 
           <div className="pdp__info">
             <p className="pdp__brand">{product.brand}</p>
