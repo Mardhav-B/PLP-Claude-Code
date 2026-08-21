@@ -18,6 +18,7 @@ export default function App() {
     total,
     totalPages,
     page,
+    pageSize,
     setPage,
     sortBy,
     changeSort,
@@ -89,7 +90,13 @@ export default function App() {
               onClearFilters={resetFilters}
             />
 
-            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onChange={setPage}
+              total={total}
+              pageSize={pageSize}
+            />
           </div>
         </div>
       </main>

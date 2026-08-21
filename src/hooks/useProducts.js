@@ -158,6 +158,7 @@ export function useProducts({ pageSize = 12 } = {}) {
     total,
     totalPages,
     page,
+    pageSize,
     setPage,
     sortBy,
     changeSort,

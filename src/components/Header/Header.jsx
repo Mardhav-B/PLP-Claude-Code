@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useShop } from "../../context/ShopContext";
 import "./Header.css";
 
@@ -88,7 +89,8 @@ export default function Header({ search, onSearchChange }) {
             <span className="site-header__icon-label">Account</span>
           </button>
 
-          <button
+          <Link
+            to="/wishlist"
             className="site-header__icon-btn"
             aria-label={`Wishlist, ${wishlist.length} items`}
           >
@@ -111,7 +113,7 @@ export default function Header({ search, onSearchChange }) {
             {wishlist.length > 0 && (
               <span className="site-header__badge">{wishlist.length}</span>
             )}
-          </button>
+          </Link>
 
           <button
             className="site-header__icon-btn"

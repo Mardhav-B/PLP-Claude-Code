@@ -4,6 +4,7 @@ const ShopContext = createContext(null);
 
 const RECENTLY_VIEWED_KEY = 'plp:recentlyViewed';
 const RECENTLY_VIEWED_LIMIT = 8;
+const WISHLIST_KEY = 'plp:wishlist';
 
 function readRecentlyViewed() {
   try {
@@ -16,9 +17,20 @@ function readRecentlyViewed() {
   }
 }
 
+function readWishlist() {
+  try {
+    const raw = localStorage.getItem(WISHLIST_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export function ShopProvider({ children }) {
   const [cart, setCart] = useState([]); // [{ product, qty }]
-  const [wishlist, setWishlist] = useState([]); // [productId]
+  const [wishlist, setWishlist] = useState(readWishlist); // [productId]
   const [recentlyViewed, setRecentlyViewed] = useState(readRecentlyViewed); // [productId], most recent first
 
   const addToCart = useCallback((product, qty = 1) => {
@@ -38,9 +50,13 @@ export function ShopProvider({ children }) {
   }, []);
 
   const toggleWishlist = useCallback((productId) => {
-    setWishlist((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
-    );
+    setWishlist((prev) => {
+      const next = prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId];
+      localStorage.setItem(WISHLIST_KEY, JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const recordView = useCallback((productId) => {
